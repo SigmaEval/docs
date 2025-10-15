@@ -49,5 +49,14 @@
   "banner": {
     "content": "🚀 Version 0.1.1 is now available!",
     "dismissible": true
+  },
+  "description": "An open-source Python framework for statistical, end-to-end evaluation of Gen AI apps, agents, and bots",
+  "seo": {
+    "indexing": "all",
+    "metatags": {
+      "og:image": "/images/sigmaeval-architecture.jpg",
+      "twitter:card": "summary_large_image",
+      "keywords": "SigmaEval, Gen AI, LLM, evaluation, testing, statistical, Python, framework, AI agents, AI bots"
+    }
   }
 }
