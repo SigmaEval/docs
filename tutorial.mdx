@@ -1,0 +1,110 @@
+---
+title: "Tutorial"
+description: "Learn how to write an end-to-end test for a Gen AI application using pytest"
+---
+
+<Info>
+  **Prerequisites**:
+  - Python 3.10+
+  - An API key for an LLM provider (e.g., OpenAI, Anthropic, Google)
+</Info>
+
+This guide will walk you through installing SigmaEval, setting up your first evaluation, and running a "Hello World" example.
+
+## Installation
+
+First, install the SigmaEval framework from PyPI. We recommend creating a virtual environment to avoid dependency conflicts.
+
+```bash
+pip install sigmaeval-framework
+```
+
+You will also need to set your API key for the LLM provider you wish to use for the AI Judge. SigmaEval supports 100+ LLM providers via [LiteLLM](https://litellm.ai/), including OpenAI, Anthropic, Google, and local models via Ollama.
+
+<CodeGroup>
+```bash OpenAI
+export OPENAI_API_KEY="your-api-key"
+```
+```bash Anthropic
+export ANTHROPIC_API_KEY="your-api-key"
+```
+```bash Gemini
+export GEMINI_API_KEY="your-api-key"
+```
+```bash Ollama
+# No API key needed for local Ollama models
+# Set the model name directly, e.g., "ollama/llama3"
+```
+</CodeGroup>
+
+## Hello World Example
+
+Here is a minimal, complete example of how to use SigmaEval to test a simple AI application. This example evaluates a bot that is expected to return a friendly greeting.
+
+```python test_app.py
+from sigmaeval import SigmaEval, ScenarioTest, assertions
+import asyncio
+from typing import List, Dict, Any
+
+# 1. Define the ScenarioTest to describe the desired behavior
+scenario = (
+    ScenarioTest("Simple Test")
+    .given("A user interacting with a chatbot")
+    .when("The user greets the bot")
+    .expect_behavior(
+        "The bot provides a simple and friendly greeting.",
+        # We want to be confident that at least 75% of responses will score a 7/10 or higher.
+        criteria=assertions.scores.proportion_gte(min_score=7, proportion=0.75)
+    )
+    .max_turns(1) # Only needed here since we're returning a static greeting
+)
+# 2. Implement the app_handler to allow SigmaEval to communicate with your app
+async def app_handler(messages: List[Dict[str, str]], state: Any) -> str:
+    # In a real test, you would pass messages to your app and return the response.
+    # For this example, we'll return a static, friendly greeting.
+    return "Hello there! Nice to meet you!"
+
+# 3. Initialize SigmaEval and run the evaluation
+async def main():
+    # You can use any model that LiteLLM supports: https://docs.litellm.ai/docs/providers
+    sigma_eval = SigmaEval(
+        judge_model="gemini/gemini-2.5-flash",
+        sample_size=20,  # The number of times to run the test
+        significance_level=0.05  # Corresponds to a 95% confidence level
+    )
+    result = await sigma_eval.evaluate(scenario, app_handler)
+
+    # Print the detailed summary to the console
+    print(result)
+
+    # Programmatically check the result
+    if result.passed:
+        print("✅ Scenario passed!")
+    else:
+        print("❌ Scenario failed.")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## Interpret the Results
+
+When you run the script, SigmaEval will simulate 20 conversations, have an AI Judge score each one, and then print a summary of the results. The summary shows the overall pass/fail status for the scenario and a breakdown of each expectation.
+
+Here's an example of what the output might look like:
+
+```text
+--- Result for Scenario: 'Simple Test' ---
+Overall Status: ✅ PASSED
+Summary: 1/1 expectations passed.
+
+Breakdown:
+  - [✅ PASSED] The bot provides a simple and friendly greeting., p-value: 0.0032
+✅ Scenario passed!
+```
+
+This output confirms that the test passed, along with the p-value for the statistical test.
+
+## Next Steps
+
+Now that you've run your first evaluation, you can start applying SigmaEval to your own Gen AI applications.
