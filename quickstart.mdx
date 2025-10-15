@@ -39,78 +39,39 @@ export GEMINI_API_KEY="your-api-key"
 
 ## Hello World Example
 
-Here is a minimal, complete example of how to use SigmaEval to test a simple AI application. This example evaluates a bot that is expected to list its capabilities when a user asks "what can you do?".
-
-### 1. Define Your Application Logic
-
-First, create a simple, stateless `app_handler` function. This function is what SigmaEval will call to interact with your application. It takes a list of messages and a state object and should return your bot's response as a string.
-
-```python app.py
-from typing import List, Dict, Any
-
-async def app_handler(messages: List[Dict[str, str]], state: Any) -> str:
-    """
-    A stateless app_handler that returns a static response.
-    """
-    return "I can track orders, initiate returns, and answer product questions."
-```
-
-### 2. Define Your Evaluation Scenario
-
-Next, define the test case using `ScenarioTest`. You'll describe the user's goal, the action they take, and what you expect the bot to do. You'll also specify the statistical criteria for success.
-
-In this example, we expect that in at least 90% of conversations, the bot's response will earn a quality score of 7/10 or higher.
+Here is a minimal, complete example of how to use SigmaEval to test a simple AI application. This example evaluates a bot that is expected to return a friendly greeting.
 
 ```python test_app.py
 from sigmaeval import SigmaEval, ScenarioTest, assertions
-
-# Define the test scenario
-scenario = (
-    ScenarioTest("Bot explains its capabilities")
-    .given("A new user asks about what the bot can do")
-    .when("The user asks 'what can you do?'")
-    .expect_behavior(
-        "Bot lists its main functions.",
-        criteria=assertions.scores.proportion_gte(min_score=7, proportion=0.90)
-    )
-)
-```
-
-### 3. Run the Evaluation
-
-Finally, create an instance of the `SigmaEval` class and call the `.evaluate()` method, passing in your scenario and `app_handler`. The `evaluate` method is an async function, so you'll need to run it within an async context.
-
-```python test_app.py
 import asyncio
 from typing import List, Dict, Any
 
-from sigmaeval import SigmaEval, ScenarioTest, assertions
-
-# Your app_handler from Step 1
-async def app_handler(messages: List[Dict[str, str]], state: Any) -> str:
-    return "I can track orders, initiate returns, and answer product questions."
-
-# Your scenario from Step 2
+# 1. Define the ScenarioTest to describe the desired behavior
 scenario = (
-    ScenarioTest("Bot explains its capabilities")
-    .given("A new user asks about what the bot can do")
-    .when("The user asks 'what can you do?'")
+    ScenarioTest("Simple Test")
+    .given("A user interacting with a chatbot")
+    .when("The user greets the bot")
     .expect_behavior(
-        "Bot lists its main functions.",
-        criteria=assertions.scores.proportion_gte(min_score=7, proportion=0.90)
+        "The bot provides a simple and friendly greeting.",
+        # We want to be confident that at least 75% of responses will score a 7/10 or higher.
+        criteria=assertions.scores.proportion_gte(min_score=7, proportion=0.75)
     )
+    .max_turns(1) # Only needed here since we're returning a static greeting
 )
+# 2. Implement the app_handler to allow SigmaEval to communicate with your app
+async def app_handler(messages: List[Dict[str, str]], state: Any) -> str:
+    # In a real test, you would pass messages to your app and return the response.
+    # For this example, we'll return a static, friendly greeting.
+    return "Hello there! Nice to meet you!"
 
+# 3. Initialize SigmaEval and run the evaluation
 async def main():
-    # Initialize SigmaEval
-    # You can optionally set a global sample_size and significance_level
+    # You can use any model that LiteLLM supports: https://docs.litellm.ai/docs/providers
     sigma_eval = SigmaEval(
         judge_model="gemini/gemini-2.5-flash",
-        sample_size=20,
-        significance_level=0.05
+        sample_size=20,  # The number of times to run the test
+        significance_level=0.05  # Corresponds to a 95% confidence level
     )
-
-    # Run the evaluation
     result = await sigma_eval.evaluate(scenario, app_handler)
 
     # Print the detailed summary to the console
@@ -128,60 +89,22 @@ if __name__ == "__main__":
 
 ### 4. Interpret the Results
 
-When you run the script, SigmaEval will simulate 20 conversations, have an AI Judge score each one, and then print a detailed summary of the results. The summary will show you the pass/fail status, the statistical outcomes, and the reasoning behind the scores.
+When you run the script, SigmaEval will simulate 20 conversations, have an AI Judge score each one, and then print a summary of the results. The summary shows the overall pass/fail status for the scenario and a breakdown of each expectation.
 
 Here's an example of what the output might look like:
 
 ```text
-======================================================================
-- SCENARIO: Bot explains its capabilities
-======================================================================
-  - GIVEN: A new user asks about what the bot can do
-  - WHEN: The user asks 'what can you do?'
+--- Result for Scenario: 'Simple Test' ---
+Overall Status: ✅ PASSED
+Summary: 1/1 expectations passed.
 
-----------------------------------------------------------------------
-- EXPECTATION: Bot lists its main functions.
-----------------------------------------------------------------------
-  - SCORES:
-    - Median: 8.0
-    - Mean: 8.2
-    - Std Dev: 0.9
-    - Histogram:
-      - 6: ▇ (2)
-      - 7: ▇▇▇ (6)
-      - 8: ▇▇▇▇▇ (10)
-      - 9: ▇ (2)
-      - 10: ▇ (0)
-
-  - CRITERIA:
-    - ✅ proportion_gte(min_score=7, proportion=0.9)
-      - Observed: 18/20 (90.0%) of scores were >= 7
-      - p-value: 0.04 (Significant)
-
-----------------------------------------------------------------------
-- RESULT: ✅ PASSED
-----------------------------------------------------------------------
+Breakdown:
+  - [✅ PASSED] The bot provides a simple and friendly greeting., p-value: 0.0032
+✅ Scenario passed!
 ```
 
-This output confirms that the test passed because the proportion of conversations with a score of 7 or higher was sufficient to meet our statistical bar.
+This output confirms that the test passed, along with the p-value for the statistical test.
 
 ## Next Steps
 
 Now that you've run your first evaluation, you can start applying SigmaEval to your own Gen AI applications.
-
-<CardGroup cols={2}>
-  <Card
-    title="Core Concepts"
-    icon="book-open"
-    href="/development"
-  >
-    Learn about the core concepts behind SigmaEval's statistical approach.
-  </Card>
-  <Card
-    title="API Reference"
-    icon="code"
-    href="/api-reference/introduction"
-  >
-    Explore the full API for advanced testing scenarios.
-  </Card>
-</CardGroup>
