@@ -1,0 +1,20 @@
+---
+title: How it Works
+description: "Understand the core evaluation process of SigmaEval, from defining success and simulating user interactions to judging and analyzing the results."
+---
+
+At its core, SigmaEval uses two AI agents to automate evaluation: an **AI User Simulator** that realistically tests your application, and an **AI Judge** that scores its performance. The process is as follows:
+
+1.  **Define "Good"**: You start by defining a test scenario in plain language, including the user's goal and a clear description of the successful outcome you expect. This becomes your objective quality bar.
+
+2.  **Simulate and Collect Data**: The **AI User Simulator** acts as a test user, interacting with your application based on your scenario. It runs these interactions many times to collect a robust dataset of conversations.
+
+3.  **Judge and Analyze**: The **AI Judge** scores each conversation against your definition of success. SigmaEval then applies statistical methods to these scores to determine if your quality bar has been met with a specified level of confidence.
+
+<Frame>
+  <img
+    src="/images/sigmaeval-architecture.jpg"
+    alt="SigmaEval Architecture Diagram"
+  />
+</Frame>
+

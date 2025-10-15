@@ -11,28 +11,15 @@
   "navigation": {
     "groups": [
       {
-        "group": "Getting started",
+        "group": "Getting Started",
         "pages": ["index", "quickstart"]
       },
       {
-        "group": "Customization",
-        "pages": ["essentials/settings", "essentials/navigation"]
-      },
-      {
-        "group": "Writing content",
+        "group": "Core Concepts",
         "pages": [
-          "essentials/markdown",
-          "essentials/code",
-          "essentials/images",
-          "essentials/reusable-snippets"
-        ]
-      },
-      {
-        "group": "AI tools",
-        "pages": [
-          "ai-tools/cursor",
-          "ai-tools/claude-code",
-          "ai-tools/windsurf"
+          "core-concepts/why-sigmaeval",
+          "core-concepts/how-it-works",
+          "core-concepts/statistical-foundations"
         ]
       }
     ]

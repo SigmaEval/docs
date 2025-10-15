@@ -1,0 +1,12 @@
+---
+title: Statistical Foundations
+description: "Discover the statistical methods that power SigmaEval's conclusions, including one-sided binomial tests for proportions and bootstrap hypothesis tests for medians."
+---
+
+To ensure robust and reliable conclusions, SigmaEval uses established statistical hypothesis tests tailored to the type of evaluation being performed.
+
+- **For Proportion-Based Criteria** (e.g., `proportion_gte`): The framework employs a **one-sided binomial test**. This test is ideal for scenarios where each data point can be classified as a binary outcome (e.g., "success" or "failure," like a score being above or below a threshold). It directly evaluates whether the observed proportion of successes in your sample provides enough statistical evidence to conclude that the true proportion for all possible interactions meets your specified minimum target.
+
+- **For Median-Based Criteria** (e.g., `median_gte`): The framework uses a **bootstrap hypothesis test**. The median is a robust measure of central tendency, but its theoretical sampling distribution can be complex. Bootstrapping is a powerful, non-parametric resampling method that avoids making assumptions about the underlying distribution of the scores or metric values. By repeatedly resampling the collected data, it constructs an empirical distribution of the median, which is then used to determine if the observed median provides statistically significant evidence for the hypothesis.
+
+This approach ensures that the framework's conclusions are statistically sound without imposing rigid assumptions on the nature of your AI's performance data.

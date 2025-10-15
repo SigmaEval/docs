@@ -34,7 +34,7 @@ At its core, SigmaEval uses two AI agents to automate evaluation: an **AI User S
 3.  **Judge and Analyze**: The **AI Judge** scores each conversation against your definition of success. SigmaEval then applies statistical methods to these scores to determine if your quality bar has been met with a specified level of confidence.
 
 <div align="center">
-    <img src="docs/images/sigmaeval-architecture.jpg" alt="SigmaEval Architecture Diagram" width="600">
+    <img src="docs/images/sigmaeval-architecture.jpg" alt="SigmaEval Architecture Diagram" width="600"/>
 </div>
 
 ## Installation
