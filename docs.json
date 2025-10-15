@@ -56,7 +56,8 @@
     "metatags": {
       "og:image": "/images/sigmaeval-architecture.jpg",
       "twitter:card": "summary_large_image",
-      "keywords": "SigmaEval, Gen AI, LLM, evaluation, testing, statistical, Python, framework, AI agents, AI bots"
+      "keywords": "SigmaEval, Gen AI, LLM, evaluation, testing, statistical, Python, framework, AI agents, AI bots",
+      "google-site-verification": "google40d913a24f13ba22"
     }
   }
 }
