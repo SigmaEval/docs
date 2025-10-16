@@ -50,7 +50,7 @@
     "content": "🚀 Version 0.1.1 is now available!",
     "dismissible": true
   },
-  "description": "An open-source Python framework for statistical, end-to-end evaluation of Gen AI apps, agents, and bots",
+  "description": "An open-source Python framework for statistical, end-to-end testing of Gen AI apps, agents, and bots",
   "seo": {
     "indexing": "all",
     "metatags": {
