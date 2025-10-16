@@ -10,7 +10,7 @@ description: "Learn how to write an end-to-end test for an AI Chatbot using pyte
   - An API key for an LLM provider (e.g., OpenAI, Anthropic, Google)
 </Info>
 
-This guide will walk you through building a simple AI assistant and then writing a robust, statistical, end-to-end test for it with SigmaEval and `pytest`. By the end, you will have a complete, runnable example that you can adapt for your own projects.
+This guide demonstrates how to write a robust, statistical, end-to-end test for a conversational AI chatbot with SigmaEval and `pytest`. We'll start by building a simple AI assistant to have an application to test. By the end, you will have a complete, runnable example that you can adapt for your own projects.
 
 ## Installation
 
@@ -20,23 +20,25 @@ First, install the necessary libraries from PyPI. We recommend creating a virtua
 pip install sigmaeval-framework litellm pytest pytest-asyncio
 ```
 
-You will also need to set your API key for the LLM provider you wish to use. SigmaEval supports 100+ LLM providers via [LiteLLM](https://litellm.ai/), including OpenAI, Anthropic, Google, and local models via Ollama.
+You will also need to set your API key for the LLM provider you wish to use. SigmaEval supports 100+ LLM providers via [LiteLLM](https://docs.litellm.ai/docs/providers/), including OpenAI, Anthropic, Google, and local models via Ollama.
 
 <CodeGroup>
+```bash Gemini
+export GEMINI_API_KEY="your-api-key"
+```
 ```bash OpenAI
 export OPENAI_API_KEY="your-api-key"
 ```
 ```bash Anthropic
 export ANTHROPIC_API_KEY="your-api-key"
 ```
-```bash Gemini
-export GEMINI_API_KEY="your-api-key"
-```
 ```bash Ollama
 # No API key needed for local Ollama models
 # Set the model name directly, e.g., "ollama/llama3"
 ```
 </CodeGroup>
+
+<Note>The code in this tutorial uses Gemini as the LLM provider. If you want to use a different provider replace the model name in the code with the name of the model you want to use. See the [LiteLLM documentation](https://docs.litellm.ai/docs/providers/) for more information.</Note>
 
 ## Step 1: Build a Simple AI Assistant
 
