@@ -65,7 +65,7 @@ async def app_handler(messages: List[Dict[str, str]], state: Any) -> str:
 
     # Use LiteLLM's async completion function to call the model
     response = await acompletion(
-        model="gemini/gemini-pro", # Or any other model
+        model="gemini/gemini-2.5-flash", # Or any other model
         messages=messages_with_system_prompt
     )
     
