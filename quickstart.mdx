@@ -11,9 +11,43 @@ description: "Get started with SigmaEval in minutes with this hands-on tutorial"
 
 This guide will walk you through installing SigmaEval, setting up your first evaluation, and running a "Hello World" example.
 
+<Tip>
+  **Recommended**: create and activate a Python virtual environment to avoid
+  dependency conflicts.
+</Tip>
+
+<Accordion title="Virtual environment setup">
+
+Create a Python virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+Activate the Python virtual environment:
+
+<Tabs>
+  <Tab title="Windows CMD">
+    ```bash
+    .venv\Scripts\activate.bat
+    ```
+  </Tab>
+  <Tab title="Windows Powershell">
+    ```bash
+    .venv\Scripts\Activate.ps1
+    ```
+  </Tab>
+  <Tab title="MacOS / Linux">
+    ```bash
+    source .venv/bin/activate
+    ```
+  </Tab>
+</Tabs>
+</Accordion>
+
 ## Installation
 
-First, install the SigmaEval framework from PyPI. We recommend creating a virtual environment to avoid dependency conflicts.
+First, install the SigmaEval framework from PyPI.
 
 ```bash
 pip install sigmaeval-framework
